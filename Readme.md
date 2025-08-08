@@ -83,30 +83,27 @@ python manage.py runserver  # Start the local server
 ![Landing Page](/screenshots/landing.png)
 
 ### Request Access Page
-![Request Access Page](/screenshots/requestaccess.png.png)
+![Request Access Page](/screenshots/requestaccess.png)
 
 ### Login Page
 ![Login Page](/screenshots/login.png)
 
-### Dashboard Page
-![Dashboard Page](/screenshots/misrdashboard.png)
+### Sales Dashboard
+![Sales Dashboard](/screenshots/sales1.png)
 
-### Sales Page
-![Sales Page](/screenshots/sales1.png)
-
-![Sales Page](/screenshots/sales2.png)
+![Sales Dashboard](/screenshots/sales2.png)
 
 
-### Receive Page
-![Receive Page](/screenshots/receive.png)
+### Receive Dashboard
+![Receive Dashboard](/screenshots/receive.png)
 
 
-### Inventory Page
-![ Inventory Page](/screenshots/inventory.png)
+### Inventory Dashboard
+![ Inventory Dashboard](/screenshots/inventory.png)
 
 
-### Profitability Page
-![ Profitability Page](/screenshots/profit.png)
+### Profitability Dashboard
+![ Profitability Dashboard](/screenshots/profit.png)
 
 
 ###  Shops Page
