@@ -40,7 +40,7 @@ Real-time tracking, Google Sheets integration, and shop-wise dashboards — all 
 
 
 
-##  Installation Guide for To do App Project
+##  Installation Guide for Multi-Shop Inventory & Sales Reporting
 
 ### 1. Clone the repository
 git clone https://github.com/Darpan-Anjanay/MISR.git  # Download the project from GitHub
