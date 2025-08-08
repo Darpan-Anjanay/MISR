@@ -1,0 +1,24 @@
+{% with path=request.path %}
+<ul class="nav flex-column">
+  <li><a href="{% url 'dashboard' %}" class="nav-link {% if path == '/' %}active{% endif %}"><i class="bi bi-speedometer2"></i>Dashboard</a></li>
+
+  
+
+
+  <li><a href="{% url 'sales' %}" class="nav-link {% if path == '/sales/' %}active{% endif %}"><i class="bi bi-cart-check"></i> Sales</a></li>
+  <li><a href="{% url 'inventroy' %}" class="nav-link {% if path == '/inventroy/' %}active{% endif %}"><i class="bi bi-grid-3x3-gap"></i>Inventory</a></li>
+  <li><a href="{% url 'receive' %}" class="nav-link {% if path == '/receive/' %}active{% endif %}"><i class="bi bi-truck"></i>Receive</a></li>
+  <li><a href="{% url 'profitability' %}" class="nav-link {% if path == '/profitability/' %}active{% endif %}"><i class="bi  bi-graph-up-arrow"></i>Profitability</a></li>
+
+
+
+
+  <li><a href="{% url 'items' %}" class="nav-link {% if path == '/items/' %}active{% endif %}"><i class="bi bi-box"></i> Items</a></li>
+  <li><a href="{% url 'shops' %}" class="nav-link {% if path == '/shops/' %}active{% endif %}"><i class="bi bi-shop"></i> Shops</a></li>
+
+  <li><a href="{% url 'profile' %}" class="nav-link {% if path == '/profile/' %}active{% endif %}"><i class="bi bi-person"></i> Profile </a></li>
+
+  <li><a href="{% url 'password_change' %}" class="nav-link {% if path == '/password_change/' %}active{% endif %}"><i class="bi bi-key"></i> Change Password</a></li>
+  <li><a href="{% url 'logout' %}" class="nav-link"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+</ul>
+{% endwith %}

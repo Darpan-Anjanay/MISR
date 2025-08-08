@@ -1,0 +1,47 @@
+{% extends "Shop/Base.html" %}
+{% block title %}Edit Shop{% endblock title %}
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="card">
+            
+                        <div class="card-header bg-dark text-white">
+                            Edit Shop - {{ shop.name }}
+                        </div>
+                        <div class="m-3">
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                        </div>
+                        <div class="form-check m-3">
+                            {{ form.active_status }}
+                            {{ form.active_status.label_tag }}
+                        </div>
+                        <div class="m-3">
+                            {{ form.shop_id.label_tag }}
+                            {{ form.shop_id }}
+                        </div>
+                        <div class="m-3">
+                            {{ form.shared_email.label_tag }}
+                            {{ form.shared_email }}
+                        </div>
+
+                
+                    
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-dark btn-sm">Update</button>
+                            <a href="{% url 'shops' %}" class="btn btn-secondary btn-sm">Cancel</a> 
+                        </div>
+                </div>      
+            </form>
+        </div>
+    </div>
+            
+
+
+
+</div>
+{% endblock content %}

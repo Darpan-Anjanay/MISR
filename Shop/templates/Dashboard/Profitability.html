@@ -1,0 +1,133 @@
+{% extends "Shop/base.html" %}
+{% block title %}Profitability {% endblock title %}
+{% block content %}
+<style>
+  .scroll-anchor {
+    scroll-margin-top: 160px; 
+  }
+  
+table {
+    min-width: max-content; 
+}
+</style>
+<div class="container ">
+   
+
+
+    <div class="container-fluid sticky-top bg-white shadow mb-3  p-3">
+         <div class="card">
+            <div class="card-header bg-dark text-white">
+                Profitability  Dashboard
+            </div>
+        </div>
+        
+        <div class="row  mt-1">
+            <div class="col-md-4 mb-2">
+            <a href="#Shopwise" class="btn btn-outline-dark w-100">Shop-wise Profit Comparison</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#topprofit" class="btn btn-outline-dark w-100">Top Profitable Items</a>
+            </div>
+           
+        </div>
+        <form method="get" class="row">
+            <div class="col-md-2">
+                <label>From Date</label>
+                <input type="date" name="from_date" class="form-control" value="{{ from_date }}">
+            </div>
+            <div class="col-md-2">
+                <label>To Date</label>
+                <input type="date" name="to_date" class="form-control" value="{{ to_date }}">
+            </div>
+            <div class="col-md-2">
+                <label>Shop</label>
+                <select name="shop" class="form-select">
+                    <option value="">All</option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}" {% if shop.id|stringformat:"s" == selected_shop %}selected{% endif %}>{{ shop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Item</label>
+                <select name="item" class="form-select">
+                    <option value="">All</option>
+                    {% for item in items %}
+                    <option value="{{ item.id }}" {% if item.id|stringformat:"s" == selected_item %}selected{% endif %}>{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Payment Type</label>
+                <select name="payment_type" class="form-select">
+                    <option value="">All</option>
+                    <option value="Cash" {% if selected_payment == 'Cash' %}selected{% endif %}>Cash</option>
+                    <option value="Card" {% if selected_payment == 'Card' %}selected{% endif %}>Card</option>
+                    <option value="UPI" {% if selected_payment == 'UPI' %}selected{% endif %}>UPI</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <div class="ml-auto">
+                    <button type="submit" class="btn btn-outline-dark mr-2">Filter</button>
+                    <a class="btn btn-outline-dark" href="{% url 'profitability' %}">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+   
+   
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="Shopwise">Shop-wise Profit Comparison</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Shop</th>
+                        <th>Total Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in shop_profit %}
+                        <tr>
+                            <td>{{ row.shop__name }}</td>
+                            <td>₹ {{ row.total_profit|floatformat:2 }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4">No data</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="topprofit">Top Profitable Items</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Item</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item_profit %}
+                        <tr>
+                            <td>{{ item.item__name }}</td>
+                            <td>₹ {{ item.total_profit|floatformat:2 }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4">No data</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

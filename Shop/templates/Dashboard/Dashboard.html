@@ -1,0 +1,174 @@
+{% extends "Shop/base.html" %}
+{% load static %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+<style>
+    
+table {
+    min-width: max-content; 
+    font-size: 10px;
+}
+
+</style>
+<div class="container">
+
+    <div class="card mb-3">
+          <div class="card-header bg-dark text-white">
+                Dashboard
+          </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3 col-sm-1">
+            <div class="card text-white bg-primary  mb-3">
+                <div class="card-header">Stock Value</div>
+                <div class="card-body">
+                    <h3 id="total_stock_value"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Sales (This Month)</div>
+                <div class="card-body">
+                    <h3 id="total_sales"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">Profit (This Month)</div>
+                <div class="card-body">
+                    <h3 id="total_profit"></h3>
+                </div>
+            </div>
+        </div>
+        
+       
+
+        
+        <div class="col-md-3 ">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Active Shops</div>
+                <div class="card-body">
+                    <h3 id="active_shops"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div>
+                 <canvas id="salesTrendChart"></canvas>
+            </div>
+           
+        </div>
+        <div class="col-md-6 mb-3">
+             <div>
+                <canvas id="shopSalesChart"></canvas>   
+            </div>
+        </div>
+   
+        <div class="col-md-6 mb-3">
+            <div>
+                 <canvas  id="PaymentTypeChart"></canvas>
+            </div>
+           
+        </div>
+        <div class="col-md-6 mb-3">
+             <div>
+               
+                <canvas  id="stockvaluebyshopChart"></canvas>
+                   
+            </div>
+        </div>
+   
+        <div class="col-md-6">
+              <div>
+                 <canvas  id="topsolditems"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+              <div>
+                 <canvas  id="topsoldbyprofit"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+              <div style="height:400px;">
+                 <canvas  id="shopwiseprofit"></canvas>
+            </div>
+        </div>
+         <div class="col-md-6">
+              <div style="height:400px;">
+                 <canvas  id="stockquantity"></canvas>
+            </div>
+        </div>
+
+
+    </div>    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white"> Top 5 Sold Items</div>
+            </div>
+            <table class="table table-bordered  table-sm  table-hover " id = "sold_items_table">
+                
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white"> Top 5 Sold By Profit</div>
+            </div>
+            <table class="table table-bordered  table-sm  table-hover " id = "profit_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white"> Recent Sales</div>
+            </div>
+            <table class="table table-bordered  table-sm  table-hover " id = "recentsales_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white"> Recent Purchases</div>
+            </div>
+            <table class="table table-bordered  table-sm  table-hover " id = "recent_purchases_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white"> Low Stock Items (≤10 qty)</div>
+            </div>
+            <table class="table table-bordered  table-sm  table-hover " id = "low_stock_items_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    
+    
+</div>
+
+<script src="{% static 'js/Dashboard/Dashboard.js' %}"></script>
+{% endblock content %}

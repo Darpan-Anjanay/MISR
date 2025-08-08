@@ -1,0 +1,289 @@
+{% extends "Shop/base.html" %}
+{% block title %}Sales{% endblock title %}
+{% block content %}
+<style>
+
+
+table {
+    min-width: max-content; 
+}
+
+
+.sticky-col {
+    position: sticky;
+    left: 0;
+    background: #f1f1f1;
+    z-index: 2;
+}
+
+  .scroll-anchor {
+    scroll-margin-top: 190px; 
+  }
+</style>
+
+<div class="container ">
+    <div class="container-fluid sticky-top bg-white shadow mb-3 p-3">
+          <div class="card">
+            <div class="card-header bg-dark text-white">
+                Sales Dashboard
+
+            </div>
+        </div>
+        <div class="row text-center mt-1">
+            <div class="col-md-4 mb-2">
+            <a href="#DateWiseSales" class="btn btn-outline-dark w-100">Date Wise Sales</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#ShopWiseRevenue" class="btn btn-outline-dark w-100">Shop Wise Revenue</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#TopSellingItems" class="btn btn-outline-dark w-100">Top Selling Items</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#RevenuebyPaymentMethod" class="btn btn-outline-dark w-100">Revenue by Payment Method</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#Salestransaction" class="btn btn-outline-dark w-100">Sales transaction</a>
+            </div>
+        </div>
+
+      
+        <form method="get" class="row mt-1">
+            <div class="col-md-2">
+                <label>From Date</label>
+                <input type="date" name="from_date" class="form-control" value="{{ from_date }}">
+            </div>
+            <div class="col-md-2">
+                <label>To Date</label>
+                <input type="date" name="to_date" class="form-control" value="{{ to_date }}">
+            </div>
+            <div class="col-md-2">
+                <label>Shop</label>
+                <select name="shop" class="form-select">
+                    <option value="">All</option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}" {% if shop.id|stringformat:"s" == selected_shop %}selected{% endif %}>{{ shop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Item</label>
+                <select name="item" class="form-select">
+                    <option value="">All</option>
+                    {% for item in items %}
+                    <option value="{{ item.id }}" {% if item.id|stringformat:"s" == selected_item %}selected{% endif %}>{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Payment Type</label>
+                <select name="payment_type" class="form-select">
+                    <option value="">All</option>
+                    <option value="Cash" {% if selected_payment == 'Cash' %}selected{% endif %}>Cash</option>
+                    <option value="Card" {% if selected_payment == 'Card' %}selected{% endif %}>Card</option>
+                    <option value="UPI" {% if selected_payment == 'UPI' %}selected{% endif %}>UPI</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <div class="ml-auto">
+                    <button type="submit" class="btn btn-outline-dark mr-2">Filter</button>
+                    <a class="btn btn-outline-dark" href="{% url 'sales' %}">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor " id="DateWiseSales">Date Wise Sales</div>
+        <div class="card-body" style="overflow-x: auto; width: 100%;">
+           <table class="table table-bordered">
+                {% for row in date_data %}
+                    {% if forloop.first %}
+                        <thead class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    {% if forloop.first or forloop.last %}
+                                      <th class="{% if forloop.first %}sticky-col{% endif %}">{{ cell }}</th>
+                                    
+                                    {% else %}
+                                    <th >{{ cell|date:'d-m-Y' }}</th>
+                                    
+                                    {% endif %}
+
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% elif forloop.last %}
+                        <tfoot class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    <td class="{% if forloop.first %}sticky-col{% endif %}" style="font-weight: bold;">{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% else %}
+                        <tbody>
+                            <tr>
+                                {% for cell in row %}
+                                    <td class="{% if forloop.first %}sticky-col{% endif %}">{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    {% endif %}
+                {% empty %}
+                    <tr><td colspan="100%">No data found.</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="ShopWiseRevenue">Shop Wise Revenue</div>
+        <div class="card-body">
+             <table class="table table-bordered">
+                {% for row in revenue_data %}
+                    {% if forloop.first %}
+                        <thead class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    <th>{{ cell }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% elif forloop.last %}
+                        <tfoot class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    <td style="font-weight: bold;">{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% else %}
+                        <tbody>
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    {% endif %}
+                {% empty %}
+                    <tr><td colspan="100%">No data found.</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="TopSellingItems">Top Selling Items</div>
+        <div class="card-body">
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                     
+                        <th>Item</th>
+                        <th>Qty Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in top_items %}
+                    <tr>
+                       
+                        <td>{{ row.item__name }}</td>
+                        <td>{{ row.total_qty }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">No data found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="RevenuebyPaymentMethod">Revenue by Payment Method</div>
+        <div class="card-body">
+             <table class="table table-bordered">
+                {% for row in payment_data %}
+                    {% if forloop.first %}
+                        <thead class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    <th>{{ cell }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% elif forloop.last %}
+                        <tfoot class="table-light">
+                            <tr>
+                                {% for cell in row %}
+                                    <td style="font-weight: bold;">{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% else %}
+                        <tbody>
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    {% endif %}
+                {% empty %}
+                    <tr><td colspan="100%">No data found.</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+      <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="Salestransaction">Sales transaction</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                 <thead class="table-light">
+                <tr>
+                    <th>Invoice No</th>
+                    <th>Shop</th>
+                    <th>Item</th>
+                    <th>Cost Rate</th>
+                    <th>Qty Sold</th>
+                    <th>Sale Rate</th>
+                    <th>Sale Date</th>
+                    <th>Total Amount</th>
+                    <th>Payment Type</th>
+                    <th>Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td>{{ sale.invoice_no }}</td>
+                    <td>{{ sale.shop.name }}</td> 
+                    <td>{{ sale.item.name }}</td> 
+                    <td>{{ sale.cost_rate }}</td>
+                    <td>{{ sale.qty_sold }}</td>
+                    <td>{{ sale.sale_rate }}</td>
+                    <td>{{ sale.sale_date|date:"d-m-Y" }}</td>
+                    <td>{{ sale.total_amt }}</td>
+                    <td>{{ sale.payment_type }}</td>
+                    <td>{{ sale.profit }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="11" class="text-center text-muted">No sales records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock content %}

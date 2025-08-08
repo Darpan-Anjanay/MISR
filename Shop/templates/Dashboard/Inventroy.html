@@ -1,0 +1,178 @@
+{% extends "Shop/base.html" %}
+{% block title %}Inventroy{% endblock title %}
+{% block content %}
+<style>
+  .scroll-anchor {
+    scroll-margin-top: 170px; 
+  }
+  
+table {
+    min-width: max-content; 
+}
+</style>
+
+
+<div class="container">
+   
+     <div class="container-fluid sticky-top bg-white shadow mb-3 p-3">
+          <div class="card">
+                <div class="card-header bg-dark text-white">
+                    Inventory Dashboard
+
+                </div>
+          </div>   
+        
+        <div class="row text-center mt-1">
+            <div class="col-md-4 mb-2">
+            <a href="#Shopwise" class="btn btn-outline-dark w-100">Shop-wise Stock Value</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#itemwise" class="btn btn-outline-dark w-100">Item-wise Report (Shop-wise Qty)</a>
+            </div>
+            <div class="col-md-4 mb-2">
+            <a href="#LowStock" class="btn btn-outline-dark w-100">Low Stock Items (Qty &lt; 10)</a>
+            </div>
+        </div>
+    
+        <form method="get" class="row  mt-3">
+            <div class="col-md-4">
+                <label class="form-label">Shop</label>
+                <select name="shop" class="form-select">
+                    <option value="">All</option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}" {% if shop.id|stringformat:"s" == selected_shop %}selected{% endif %}>
+                        {{ shop.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Item</label>
+                <select name="item" class="form-select">
+                    <option value="">All</option>
+                    {% for item in items %}
+                    <option value="{{ item.id }}" {% if item.id|stringformat:"s" == selected_item %}selected{% endif %}>
+                        {{ item.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        <div class="col-md-4 d-flex align-items-end">
+        <div class="ml-auto">
+            <button type="submit" class="btn btn-outline-dark mr-2">Filter</button>
+            <a class="btn btn-outline-dark" href="{% url 'inventroy' %}">Clear</a>
+        </div>
+    </div>
+
+        </form>
+      </div>
+    
+   
+
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="Shopwise"> Shop-wise Stock Value</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Shop</th>
+                        <th>Total Stock Value</th>
+                        <th>Total Available Qty</th>
+                    </tr>
+                </thead>
+               <tbody>
+                    {% for row in shop_summary %}
+                        {% if not forloop.last %}
+                            <tr>
+                                <td>{{ row.shop__name }}</td>
+                                <td>{{ row.total_available_qty }}</td>
+                                <td>₹{{ row.total_stock_value }}</td>
+                            </tr>
+                        {% endif %}
+                    
+                    {% if forloop.last %}
+                       
+                            <tr class="table-light" style="font-weight: bold;">
+                                <td>{{ row.shop__name }}</td>
+                                <td>{{ row.total_qty }}</td>
+                                <td>₹{{ row.total_cost }}</td>
+                            </tr>
+                      
+                    
+                    {% endif %}    
+                    {% empty %}
+                    <tr><td colspan="3" class="text-center">No data</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="itemwise"> Item-wise Report (Shop-wise Qty)</div>
+        <div class="card-body ">
+           <table class="table table-bordered">
+    {% for row in item_data %}
+        {% if forloop.first %}
+            <thead class="table-light">
+                <tr>
+                    {% for cell in row %}
+                        <th>{{ cell }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+        {% elif forloop.last %}
+            <tfoot class="table-light">
+                <tr>
+                    {% for cell in row %}
+                        <td style="font-weight: bold;">{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            </tfoot>
+        {% else %}
+            <tbody>
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        {% endif %}
+    {% empty %}
+        <tr><td colspan="100%">No data found.</td></tr>
+    {% endfor %}
+           </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white scroll-anchor" id="LowStock"> Low Stock Items (Qty &lt; 10)</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                      
+                        <th>Item</th>
+                        <th>Available Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in low_stock %}
+                    <tr>
+                      
+                        <td>{{ row.item.name }}</td>
+                        <td class="text-danger fw-bold">{{ row.available_qty }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="text-center">No low stock items</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

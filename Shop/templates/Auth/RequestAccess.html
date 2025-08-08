@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MISR - Request Access</title>
+   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+</head>
+<body class="bg-light">
+
+<div class="container-fluid vh-100 d-flex">
+    <div class="row flex-grow-1 w-100">
+      
+        <div class="col-md-6 bg-dark text-white d-flex flex-column justify-content-center align-items-center p-4">
+            <div class="text-center mb-4">
+                <h1>Multi-Shop Inventory & Sales Reporting</h1>
+                <p class="lead">Track stock, sales, and shop performance — all from a central dashboard</p>
+            </div>
+            <div class="row text-center w-100">
+                <div class="col-4">
+                    <img src="/media/landing/shopee.svg" alt="Shop" class="img-fluid mb-2" style="filter: brightness(0) invert(1); height: 50px;" />
+                    <h5>Shop Access</h5>
+                </div>
+                <div class="col-4">
+                    <img src="/media/landing/googlesheets.svg" alt="Sheets" class="img-fluid mb-2" style="filter: brightness(0) invert(1); height: 50px;" />
+                    <h5>Google Sheets</h5>
+                </div>
+                <div class="col-4">
+                    <img src="/media/landing/thestorygraph.svg" alt="Reports" class="img-fluid mb-2" style="filter: brightness(0) invert(1); height: 50px;" />
+                    <h5>Live Reports</h5>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="col-md-6 d-flex align-items-center justify-content-center ">
+            <div class="card shadow w-75 p-4">
+                 <h3 class="text-center mb-4">Request Access</h3>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark  btn-sm">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
