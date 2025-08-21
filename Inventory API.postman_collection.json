@@ -1,0 +1,529 @@
+{
+	"info": {
+		"_postman_id": "ebaaa5fd-d512-4e3f-a7aa-346b94099c8c",
+		"name": "Inventory API",
+		"description": "Collection for Access Request API with JWT authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45647126"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login - Get JWT Tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json();\r",
+									"\r",
+									"if (data.access) {\r",
+									"    pm.collectionVariables.set(\"access_token\", data.access);\r",
+									"  \r",
+									"}\r",
+									"\r",
+									"if (data.refresh) {\r",
+									"    pm.collectionVariables.set(\"refresh_token\", data.refresh);\r",
+									"    \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accesstoken/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accesstoken",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let data = pm.response.json();\r",
+									"\r",
+									"if (data.access) {\r",
+									"    pm.collectionVariables.set(\"access_token\", data.access);\r",
+									"  \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/refreshtoken/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"refreshtoken",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Access Requests",
+			"item": [
+				{
+					"name": "Create Access Request (User)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Sample User\",\n    \"company_name\": \"Sample Company\",\n    \"email\": \"user@example.com\",\n    \"contact_number\": \"1234567890\",\n    \"message\": \"Need access\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accessrequest/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessrequest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Access Requests (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/accessrequest/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessrequest",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Access Request Status (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"status\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/accessrequest/11",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessrequest",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Access Request (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/accessrequest/10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"accessrequest",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventroy Dashboard",
+			"item": [
+				{
+					"name": "List Inventroy Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/inventory/?shop=10&item=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inventory",
+								""
+							],
+							"query": [
+								{
+									"key": "shop",
+									"value": "10",
+									"description": "Shop id for particular shop"
+								},
+								{
+									"key": "item",
+									"value": "20",
+									"description": "Item id for particular item"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Receive Dashboard",
+			"item": [
+				{
+					"name": "List Receive Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/receive?from_date=2025-07-01&to_date=2025-08-21&shop=9&item=17",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"receive"
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2025-07-01",
+									"description": "From date"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-08-21",
+									"description": "To Date"
+								},
+								{
+									"key": "shop",
+									"value": "9",
+									"description": "Shop id for particular shop"
+								},
+								{
+									"key": "item",
+									"value": "17",
+									"description": "Item id for particular item"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sales Dashboard",
+			"item": [
+				{
+					"name": "List Sales Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/sales/?from_date=2025-08-01&to_date=2025-08-21&shop=&item=&payment_type=Cash",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sales",
+								""
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2025-08-01",
+									"description": "From date"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-08-21",
+									"description": "To date"
+								},
+								{
+									"key": "shop",
+									"value": "",
+									"description": "Shop id for particular shop"
+								},
+								{
+									"key": "item",
+									"value": "",
+									"description": "item id for particular item"
+								},
+								{
+									"key": "payment_type",
+									"value": "Cash",
+									"description": "Cash/UPI/Card"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profitability Dashboard",
+			"item": [
+				{
+					"name": "List Profitability Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/profitability/?from_date=2025-07-22&to_date=2025-08-21&shop=10&item=17&payment_type=Cash",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"profitability",
+								""
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2025-07-22",
+									"description": "From Date"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-08-21",
+									"description": "To Date"
+								},
+								{
+									"key": "shop",
+									"value": "10",
+									"description": "Shop id for particular shop"
+								},
+								{
+									"key": "item",
+									"value": "17",
+									"description": "Item id for particular item"
+								},
+								{
+									"key": "payment_type",
+									"value": "Cash",
+									"description": "Cash/UPI/Card"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/currentuser",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currentuser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Details",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 5,\r\n    \"username\": \"test\",\r\n    \"email\": \"test@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/currentuser/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currentuser",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Testfdsaing\",\r\n    \"email\": \"Testing@gmail.com\",\r\n    \"password\": \"Testing\",\r\n    \"password2\": \"Testing\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/register/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api"
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		}
+	]
+}
